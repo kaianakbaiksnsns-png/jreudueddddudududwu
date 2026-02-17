@@ -20,7 +20,7 @@ const BASE_URL = "https://atlantich2h.com";
 const API_KEY = process.env.SEKALIPAY_KEY;
 const BASE_URL2 = "https://sekalipay.com/api/v1";
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/appdb");
+mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://kaianakbaik:kaisayanggrace@cluster0.vkdudeq.mongodb.net/?appName=Cluster0");
 const db = mongoose.connection;
 
 const userSchema = new mongoose.Schema({
