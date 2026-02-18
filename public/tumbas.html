@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Order - SenzPedia | Platform Topup Terpercaya</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Tema (Sesuai dengan aslimu) */
+        :root {
+            --vp-primary: #0d6efd;
+            --vp-primary-rgb: 13, 110, 253;
+            --vp-primary-light: #cfe2ff;
+            --vp-primary-dark: #0b5ed7;
+            --vp-secondary: #6c757d;
+            --vp-body-bg: #f4f6f9;
+            --vp-card-bg: #ffffff;
+            --vp-text-muted: #6c757d;
+            --vp-border-color: #e2e8f0;
+            --vp-dark: #1e293b;
+            --vp-font-main: 'Manrope', sans-serif;
+            --vp-font-heading: 'Poppins', sans-serif;
+            --vp-radius-md: 12px;
+            --vp-radius-lg: 16px;
+            --vp-shadow-sm: 0 2px 10px rgba(0,0,0,0.03);
+            --vp-transition: 0.2s ease-in-out;
+        }
+
+        [data-theme="dark"] {
+            --vp-primary: #7000F0;
+            --vp-primary-rgb: 112, 0, 240;
+            --vp-primary-light: rgba(112, 0, 240, 0.15);
+            --vp-primary-dark: #5a00c4;
+            --vp-body-bg: #0f1419;
+            --vp-card-bg: #1a1f2e;
+            --vp-text-muted: #8b949e;
+            --vp-border-color: #30363d;
+            --vp-dark: #f0f6fc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--vp-font-main); background-color: var(--vp-body-bg); color: var(--vp-dark);
+            -webkit-tap-highlight-color: transparent; transition: background-color 0.3s;
+        }
+
+        /* Struktur Dasar Sidebar & Topbar */
+        .vp-wrapper { display: flex; min-height: 100vh; }
+        .vp-sidebar {
+            width: 260px; background-color: var(--vp-card-bg); padding: 1.5rem 0;
+            position: fixed; top: 0; left: -260px; bottom: 0; z-index: 1030;
+            transition: transform var(--vp-transition); border-right: 1px solid var(--vp-border-color);
+            display: flex; flex-direction: column;
+        }
+        .vp-sidebar.active { transform: translateX(260px); }
+        .vp-main-container { flex-grow: 1; padding-left: 0; transition: padding-left var(--vp-transition); width: 100%; display: flex; flex-direction: column;}
+        
+        .vp-sidebar-header { padding: 0 1.5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--vp-border-color); margin-bottom: 1rem; }
+        .vp-sidebar-brand-text { font-family: var(--vp-font-heading); font-size: 1.5rem; font-weight: 700; color: var(--vp-primary); text-decoration: none; }
+        
+        .vp-sidebar-menu .nav-link {
+            padding: 0.8rem 1.2rem; margin: 0.2rem 1rem; border-radius: var(--vp-radius-md);
+            color: var(--vp-text-muted); font-weight: 600; font-family: var(--vp-font-heading); text-decoration: none;
+            display: flex; align-items: center; gap: 10px; transition: all 0.2s;
+        }
+        .vp-sidebar-menu .nav-link.active, .vp-sidebar-menu .nav-link:hover { background-color: var(--vp-primary-light); color: var(--vp-primary); }
+
+        .vp-topbar {
+            background: var(--vp-card-bg); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--vp-border-color); position: sticky; top: 0; z-index: 1020;
+        }
+        .vp-sidebar-toggler, .vp-theme-toggle { background: none; border: none; font-size: 1.5rem; color: var(--vp-dark); cursor: pointer; }
+
+        /* KUSTOMISASI HALAMAN ORDER BARU (SUPER GACOR) */
+        .vp-content-wrapper { padding: 20px; flex-grow: 1; max-width: 1200px; margin: 0 auto; width: 100%; }
+        
+        .order-section {
+            background-color: var(--vp-card-bg); border: 1px solid var(--vp-border-color);
+            border-radius: var(--vp-radius-lg); padding: 20px; box-shadow: var(--vp-shadow-sm);
+        }
+
+        .step-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; background-color: var(--vp-primary);
+            color: white; border-radius: 50%; font-size: 14px; margin-right: 10px;
+        }
+
+        .form-label { font-family: var(--vp-font-heading); font-size: 0.85rem; font-weight: 600; color: var(--vp-text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-control, .form-select {
+            background-color: var(--vp-body-bg); border: 1px solid var(--vp-border-color);
+            border-radius: var(--vp-radius-md); color: var(--vp-dark); padding: 12px 16px; font-weight: 500;
+        }
+        .form-control:focus, .form-select:focus { border-color: var(--vp-primary); box-shadow: 0 0 0 3px var(--vp-primary-light); }
+
+        /* GRID NOMINAL ALA CODASHOP */
+        .nominal-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px;
+            max-height: 500px; overflow-y: auto; padding-right: 5px;
+        }
+        
+        /* Custom Scrollbar untuk grid */
+        .nominal-grid::-webkit-scrollbar { width: 6px; }
+        .nominal-grid::-webkit-scrollbar-track { background: var(--vp-body-bg); border-radius: 10px; }
+        .nominal-grid::-webkit-scrollbar-thumb { background: var(--vp-border-color); border-radius: 10px; }
+
+        .nominal-card {
+            border: 2px solid var(--vp-border-color); border-radius: 14px; padding: 14px;
+            cursor: pointer; background: var(--vp-card-bg); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; height: 100%; position: relative;
+        }
+        .nominal-card:hover { border-color: rgba(var(--vp-primary-rgb), 0.4); background-color: var(--vp-primary-light); transform: translateY(-2px); }
+        .nominal-card.active { border-color: var(--vp-primary); background-color: var(--vp-primary-light); }
+        .nominal-card.active::after {
+            content: '\F26A'; /* Icon Check Circle Bootstrap */
+            font-family: bootstrap-icons; position: absolute; top: -10px; right: -10px;
+            color: var(--vp-primary); background: var(--vp-card-bg); border-radius: 50%;
+            font-size: 1.4rem; line-height: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nominal-title { font-size: 0.85rem; font-weight: 600; color: var(--vp-dark); margin-bottom: 8px; line-height: 1.3; }
+        .nominal-price { font-size: 1.15rem; font-weight: 800; color: var(--vp-primary); margin-top: auto; }
+
+        .checkout-bar {
+            background-color: var(--vp-card-bg); border-top: 1px solid var(--vp-border-color);
+            padding: 16px 20px; border-radius: 0 0 var(--vp-radius-lg) var(--vp-radius-lg);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+            position: sticky; bottom: 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.02); z-index: 10;
+        }
+
+        .btn-order { background-color: var(--vp-primary); color: white; border-radius: 50rem; padding: 12px 30px; font-weight: 600; border: none; transition: 0.2s; }
+        .btn-order:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-order:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(var(--vp-primary-rgb), 0.3); }
+
+        @media (min-width: 992px) {
+            .vp-sidebar { transform: translateX(0); }
+            .vp-main-container { padding-left: 260px; }
+            .vp-sidebar-toggler { display: none; }
+        }
+        @media (max-width: 768px) {
+            .vp-content-wrapper { padding: 10px; }
+            .nominal-grid { grid-template-columns: repeat(2, 1fr); max-height: 400px; }
+            .checkout-bar { flex-direction: column; text-align: center; position: fixed; bottom: 0; left: 0; width: 100%; border-radius: 0; padding-bottom: 25px;}
+            body { padding-bottom: 100px; } /* Space for fixed checkout bar */
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="vp-wrapper">
+        <nav class="vp-sidebar" id="vpSidebar">
+            <div class="vp-sidebar-header">
+                <a class="vp-sidebar-brand-text" href="/dashboard">SenzPedia</a>
+            </div>
+            <div class="vp-sidebar-menu">
+                <a class="nav-link" href="/dashboard"><i class="bi bi-house-door-fill"></i> Home</a>
+                <a class="nav-link" href="/deposit"><i class="bi bi-wallet2"></i> Deposit</a>
+                <a class="nav-link active" href="/order"><i class="bi bi-cart-check-fill"></i> Order</a>
+                <a class="nav-link" href="/price-list"><i class="bi bi-tags-fill"></i> List Harga</a>
+                <a class="nav-link" href="/mutation-deposit"><i class="bi bi-cash-stack"></i> Mutasi Deposit</a>
+                <a class="nav-link" href="/mutation-order"><i class="bi bi-receipt-cutoff"></i> Mutasi Order</a>
+                <hr style="border-color: var(--vp-border-color); margin: 15px;">
+                <a class="nav-link" href="/profile"><i class="bi bi-person-fill"></i> Profil</a>
+                <a class="nav-link text-danger" href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+        </nav>
+
+        <div class="vp-main-container">
+            <header class="vp-topbar">
+                <button class="vp-sidebar-toggler" onclick="document.getElementById('vpSidebar').classList.toggle('active')">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="ms-auto d-flex align-items-center gap-3">
+                    <button class="vp-theme-toggle" id="themeToggle"><i class="bi bi-moon-fill" id="themeIcon"></i></button>
+                    <a href="/profile"><img src="https://ui-avatars.com/api/?name=User&background=0D6EFD&color=fff" id="userProfileImageNav" style="width: 35px; border-radius: 50%;"></a>
+                </div>
+            </header>
+
+            <div class="vp-content-wrapper">
+                <div id="alertPlaceholder"></div>
+
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div class="order-section h-100">
+                            <h5 class="fw-bold mb-4 d-flex align-items-center">
+                                <span class="step-badge">1</span> Lengkapi Data
+                            </h5>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">Nomor Tujuan / ID Game</label>
+                                <input type="text" id="targetInput" class="form-control" placeholder="Ketik nomor HP atau ID Game di sini..." oninput="validateCheckout()">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Kategori</label>
+                                <select id="categorySelect" class="form-select" disabled>
+                                    <option value="">Sedang memuat data...</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label">Layanan / Operator</label>
+                                <select id="providerSelect" class="form-select" disabled>
+                                    <option value="">Pilih Kategori Terlebih Dahulu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="order-section h-100 d-flex flex-column" style="padding:0;">
+                            <div style="padding: 20px 20px 0 20px;">
+                                <h5 class="fw-bold mb-3 d-flex align-items-center">
+                                    <span class="step-badge">2</span> Pilih Nominal
+                                </h5>
+                            </div>
+
+                            <div class="nominal-grid" id="nominalGrid" style="padding: 0 20px 20px 20px; flex-grow: 1;">
+                                <div class="w-100 text-center text-muted" style="grid-column: 1 / -1; margin-top: 50px;">
+                                    <i class="bi bi-controller fs-1 d-block mb-2 opacity-50"></i>
+                                    Pilih Operator di sebelah kiri untuk menampilkan produk.
+                                </div>
+                            </div>
+
+                            <div class="checkout-bar">
+                                <div>
+                                    <div class="text-muted small fw-bold text-uppercase">Total Pembayaran</div>
+                                    <div class="fs-3 fw-bold text-primary" id="priceDisplay">Rp 0</div>
+                                    <div class="small fw-semibold text-dark mt-1" id="productNameDisplay" style="display:none;">-</div>
+                                </div>
+                                <button id="btnCheckout" class="btn-order" disabled onclick="showConfirmModal()">
+                                    Beli Sekarang <i class="bi bi-cart-check ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 16px; background-color: var(--vp-card-bg); color: var(--vp-dark);">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold">Konfirmasi Pesanan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="background: var(--vp-body-bg); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <p class="mb-2 small text-muted">Produk</p>
+                        <h6 class="fw-bold mb-3" id="modalProduct">-</h6>
+                        
+                        <p class="mb-2 small text-muted">Nomor Tujuan</p>
+                        <h6 class="fw-bold mb-3" id="modalTarget">-</h6>
+                        
+                        <p class="mb-2 small text-muted">Total Harga</p>
+                        <h5 class="fw-bold text-primary mb-0" id="modalPrice">-</h5>
+                    </div>
+                    <p class="text-center small text-muted mb-0">Pastikan nomor tujuan sudah benar. Saldo akan otomatis terpotong.</p>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light w-100 mb-2 rounded-pill fw-bold" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary w-100 rounded-pill fw-bold" id="btnProcessOrder" onclick="processOrder()">Ya, Beli Sekarang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Data State
+        let allServices = [];
+        let selectedProduct = null;
+        
+        // DOM Elements
+        const catSelect = document.getElementById('categorySelect');
+        const provSelect = document.getElementById('providerSelect');
+        const targetInput = document.getElementById('targetInput');
+        const nominalGrid = document.getElementById('nominalGrid');
+        const btnCheckout = document.getElementById('btnCheckout');
+        const priceDisplay = document.getElementById('priceDisplay');
+        const nameDisplay = document.getElementById('productNameDisplay');
+        
+        // 1. Fetch Data
+        async function fetchServices() {
+            try {
+                const response = await fetch('/api/webtrx/layanan/price-list', { method: 'POST', body: JSON.stringify({}) });
+                const res = await response.json();
+                if (res.success && Array.isArray(res.data)) {
+                    allServices = res.data.filter(s => s.status === 'available');
+                    populateCategories();
+                } else {
+                    showAlert('Gagal mengambil data produk dari server.', 'danger');
+                }
+            } catch (err) {
+                showAlert('Gagal terhubung ke server.', 'danger');
+            }
+        }
+
+        // 2. Isi Dropdown Kategori
+        function populateCategories() {
+            const categories = [...new Set(allServices.map(s => s.category).filter(Boolean))].sort();
+            catSelect.innerHTML = '<option value="">-- Pilih Kategori --</option>';
+            categories.forEach(cat => catSelect.innerHTML += `<option value="${cat}">${cat}</option>`);
+            catSelect.disabled = false;
+        }
+
+        // 3. Saat Kategori Dipilih -> Isi Dropdown Provider
+        catSelect.addEventListener('change', () => {
+            const selectedCat = catSelect.value;
+            provSelect.innerHTML = '<option value="">-- Pilih Operator --</option>';
+            nominalGrid.innerHTML = ''; // Bersihkan grid
+            selectedProduct = null;
+            validateCheckout();
+
+            if (selectedCat) {
+                const providers = [...new Set(allServices.filter(s => s.category === selectedCat).map(s => s.provider))].sort();
+                providers.forEach(prov => provSelect.innerHTML += `<option value="${prov}">${prov}</option>`);
+                provSelect.disabled = false;
+            } else {
+                provSelect.disabled = true;
+                nominalGrid.innerHTML = '<div class="w-100 text-center text-muted" style="grid-column:1/-1; margin-top:50px;">Silakan pilih Kategori.</div>';
+            }
+        });
+
+        // 4. Saat Provider Dipilih -> Tampilkan Grid Nominal
+        provSelect.addEventListener('change', () => {
+            selectedProduct = null;
+            validateCheckout();
+            
+            const selectedProv = provSelect.value;
+            if (!selectedProv) return;
+
+            // Ambil produk dan urutkan dari harga termurah
+            const products = allServices.filter(s => s.provider === selectedProv).sort((a,b) => parseInt(a.price) - parseInt(b.price));
+            
+            nominalGrid.innerHTML = '';
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'nominal-card';
+                card.onclick = () => selectProduct(p, card);
+                
+                const harga = parseInt(p.price).toLocaleString('id-ID');
+                card.innerHTML = `
+                    <div class="nominal-title">${p.name}</div>
+                    <div class="nominal-price">Rp ${harga}</div>
+                `;
+                nominalGrid.appendChild(card);
+            });
+        });
+
+        // 5. Pilih Produk (Kotak di-klik)
+        function selectProduct(product, cardElement) {
+            // Hapus efek aktif dari semua card
+            document.querySelectorAll('.nominal-card').forEach(el => el.classList.remove('active'));
+            // Tambah efek aktif ke card yang dipilih
+            cardElement.classList.add('active');
+            
+            selectedProduct = product;
+            
+            // Update UI Checkout
+            const harga = parseInt(product.price).toLocaleString('id-ID');
+            priceDisplay.innerText = `Rp ${harga}`;
+            nameDisplay.innerText = product.name;
+            nameDisplay.style.display = 'block';
+            
+            validateCheckout();
+            
+            // Auto fokus ke input nomor jika kosong
+            if(!targetInput.value) targetInput.focus();
+        }
+
+        // 6. Validasi Tombol Beli
+        function validateCheckout() {
+            if (selectedProduct && targetInput.value.trim() !== '') {
+                btnCheckout.disabled = false;
+            } else {
+                btnCheckout.disabled = true;
+                if(!selectedProduct) {
+                    priceDisplay.innerText = 'Rp 0';
+                    nameDisplay.style.display = 'none';
+                }
+            }
+        }
+
+        // 7. Modal Konfirmasi
+        const modalConfirm = new bootstrap.Modal(document.getElementById('confirmModal'));
+        function showConfirmModal() {
+            document.getElementById('modalProduct').innerText = selectedProduct.name;
+            document.getElementById('modalTarget').innerText = targetInput.value;
+            document.getElementById('modalPrice').innerText = `Rp ${parseInt(selectedProduct.price).toLocaleString('id-ID')}`;
+            modalConfirm.show();
+        }
+
+        // 8. Proses Order ke Backend
+        async function processOrder() {
+            const btnProcess = document.getElementById('btnProcessOrder');
+            btnProcess.disabled = true;
+            btnProcess.innerText = 'Memproses...';
+
+            try {
+                const res = await fetch('/api/webtrx/order/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: selectedProduct.code, tujuan: targetInput.value })
+                });
+                const data = await res.json();
+                
+                if (res.ok && data.success) {
+                    modalConfirm.hide();
+                    showAlert('Order berhasil diproses! Mengalihkan ke halaman riwayat...', 'success');
+                    setTimeout(() => window.location.href = '/mutation-order', 2500);
+                } else {
+                    modalConfirm.hide();
+                    showAlert(data.message || 'Gagal membuat pesanan.', 'danger');
+                }
+            } catch (err) {
+                modalConfirm.hide();
+                showAlert('Terjadi kesalahan jaringan.', 'danger');
+            } finally {
+                btnProcess.disabled = false;
+                btnProcess.innerText = 'Ya, Beli Sekarang';
+            }
+        }
+
+        // Alert Helper
+        function showAlert(msg, type) {
+            const wrapper = document.getElementById('alertPlaceholder');
+            wrapper.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show fw-bold"><i class="bi bi-info-circle-fill me-2"></i>${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+            window.scrollTo(0,0);
+        }
+
+        // THEME TOGGLER (Gelap/Terang)
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+        
+        let savedTheme = localStorage.getItem('vp-theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+
+        themeToggle.addEventListener('click', () => {
+            savedTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', savedTheme);
+            localStorage.setItem('vp-theme', savedTheme);
+            themeIcon.className = savedTheme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+        });
+
+        // Initialize
+        fetchServices();
+    </script>
+</body>
+</html>
