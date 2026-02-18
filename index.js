@@ -20,8 +20,15 @@ const BASE_URL = "https://atlantich2h.com";
 const API_KEY = process.env.SEKALIPAY_KEY;
 const BASE_URL2 = "https://sekalipay.com/api/v1";
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://kaianakbaik:kaisayanggrace@cluster0.vkdudeq.mongodb.net/appdb?appName=Cluster0
-");
+mongoose.connect(
+  "mongodb+srv://kaianakbaik:kaisayanggrace@cluster0.vkdudeq.mongodb.net/appdb?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+)
+.then(() => console.log("✅ MongoDB Connected"))
+.catch(err => console.error("❌ MongoDB Error:", err));
 const db = mongoose.connection;
 
 const userSchema = new mongoose.Schema({
