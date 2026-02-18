@@ -1,69 +1,276 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Produk dari Provider</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Produk - SenzPedia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    .produk-card {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 10px;
-      display: inline-block;
-      border-radius: 10px;
-      text-align: center;
-      width: 180px;
+    :root {
+      --bg-color: #f4f7fb;
+      --card-bg: #ffffff;
+      --primary-blue: #2563eb;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
     }
-    img { max-width: 60px; height: auto; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      /* Menghilangkan kotak biru bawaan Android saat di-klik */
+      -webkit-tap-highlight-color: transparent; 
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      padding-bottom: 30px;
+    }
+
+    /* --- HEADER GLASSMORPHISM --- */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      margin-left: -8px;
+      margin-right: 12px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+
+    .back-btn:active {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .app-header h2 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    /* --- GRID PRODUK (2 KOLOM UNTUK HP) --- */
+    .container {
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    #produk-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* Otomatis bagi 2 kolom rata */
+      gap: 12px;
+    }
+
+    /* --- CARD GACOR --- */
+    .produk-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid rgba(0,0,0,0.03);
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); /* Animasi mulus */
+    }
+
+    /* Efek empuk pas ditekan di HP */
+    .produk-card:active {
+      transform: scale(0.94);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+      background-color: #fafbfc;
+    }
+
+    .icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .icon-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .produk-card h4 {
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.3;
+      color: var(--text-dark);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* --- SKELETON LOADING (Biar gak cuma tulisan doang) --- */
+    .skeleton-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .skeleton-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background-color: #e2e8f0;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    .skeleton-text {
+      width: 70%;
+      height: 14px;
+      border-radius: 4px;
+      background-color: #e2e8f0;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .error-msg {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+      background: #fff;
+      border-radius: 16px;
+    }
   </style>
 </head>
 <body>
-  <h2 id="judul">Memuat...</h2>
-  <div id="produk-container">Memuat...</div>
+
+  <div class="app-header">
+    <button class="back-btn" onclick="history.back()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    </button>
+    <h2 id="judul">SenzPedia</h2>
+  </div>
+
+  <div class="container">
+    <div id="produk-container">
+      </div>
+  </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const category = params.get("category");
     const provider = params.get("provider");
 
-    // Ubah judul sesuai kondisi
+    // Set Judul Header
     const judul = document.getElementById("judul");
-    if (!category) {
-      judul.innerText = "Semua Produk";
-    } else if (provider) {
-      judul.innerText = `Produk: ${provider} (${category})`;
+    if (provider) {
+      judul.innerText = provider.toUpperCase();
+    } else if (category) {
+      judul.innerText = category;
     } else {
-      judul.innerText = `Kategori: ${category}`;
+      judul.innerText = "Pilih Produk";
+    }
+
+    const container = document.getElementById("produk-container");
+
+    // Fungsi nampilin efek loading keren
+    function showSkeleton() {
+      container.innerHTML = Array(6).fill(`
+        <div class="skeleton-card">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-text"></div>
+        </div>
+      `).join('');
     }
 
     async function loadProduk() {
+      showSkeleton(); // Munculin loading dulu
+
       let url = "/api/webtrx/produk";
       if (category) url += `?category=${encodeURIComponent(category)}`;
 
       try {
         const res = await fetch(url);
         const json = await res.json();
-
-        const container = document.getElementById("produk-container");
-        container.innerHTML = "";
+        
+        container.innerHTML = ""; // Bersihkan loading
 
         if (!json.success || json.data.length === 0) {
-          container.innerHTML = "<p>Tidak ada produk tersedia.</p>";
+          container.innerHTML = `
+            <div class="error-msg">
+              <svg style="margin-bottom:10px; color:#cbd5e1;" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg><br>
+              Produk belum tersedia di kategori ini.
+            </div>`;
           return;
         }
 
         json.data.forEach(item => {
           const div = document.createElement("div");
           div.className = "produk-card";
+          
+          // HANDLE CLICK SUPER LANCAR (Dikasih delay 150ms biar animasi nge-klik selesai dulu baru pindah)
+          div.onclick = () => {
+             setTimeout(() => {
+               window.location.href = `/buy-panel?provider=${encodeURIComponent(item.provider)}&category=${encodeURIComponent(category || '')}`;
+             }, 150); 
+          };
+
+          const imgSrc = item.img_url ? item.img_url : 'https://cdn-icons-png.flaticon.com/512/1055/1055685.png';
+
           div.innerHTML = `
-            <img src="${item.img_url}" alt="icon" />
+            <div class="icon-box">
+              <img src="${imgSrc}" alt="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1055/1055685.png'" />
+            </div>
             <h4>${item.provider}</h4>
           `;
           container.appendChild(div);
         });
       } catch (err) {
-        document.getElementById("produk-container").innerHTML = "<p>Gagal memuat produk.</p>";
+        container.innerHTML = `
+          <div class="error-msg">
+            Gagal terhubung ke server.<br>Silakan periksa koneksi internet kamu.
+          </div>`;
       }
     }
 
+    // Panggil fungsi
     loadProduk();
   </script>
 </body>
