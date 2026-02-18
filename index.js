@@ -14,7 +14,7 @@ const qs = require("qs");
 const path = require("path");
 const app = express();
 const footer = 'SenzPedia'
-const ATLAN_API_KEY = process.env.tMwT84WS0kyxrYtGY4zHNwxmAslzOoGajWTxXw8poNG8HRCgVXf1D7WSQ6Rt61pJfwtLU4Q8G1PQw8zuzG4VGKWd6vhzxECE23Pj;
+const ATLAN_API_KEY = process.env.ATLAN_API_KEY;
 const BASE_URL = "https://atlantich2h.com";
 
 const API_KEY = process.env.SEKALIPAY_KEY;
