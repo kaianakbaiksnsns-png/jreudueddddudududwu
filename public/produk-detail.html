@@ -248,7 +248,7 @@
           // HANDLE CLICK SUPER LANCAR (Dikasih delay 150ms biar animasi nge-klik selesai dulu baru pindah)
           div.onclick = () => {
              setTimeout(() => {
-               window.location.href = `/buy-panel?provider=${encodeURIComponent(item.provider)}&category=${encodeURIComponent(category || '')}`;
+               window.location.href = `/order?provider=${encodeURIComponent(item.provider)}&category=${encodeURIComponent(category || '')}`;
              }, 150); 
           };
 
